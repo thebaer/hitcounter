@@ -58,6 +58,7 @@ func initRoutes(r *mux.Router) {
 	r.HandleFunc("/hits", handleHandler(handleViewHits))
 	r.HandleFunc("/hit", handleHandler(handleView))
 	r.HandleFunc("/hit.gif", handleHandler(handlePixel))
+	r.HandleFunc("/", handleHandler(handleHome))
 }
 
 type handlerFunc func(w http.ResponseWriter, r *http.Request) error

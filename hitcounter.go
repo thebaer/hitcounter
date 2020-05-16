@@ -2,11 +2,13 @@ package hitcounter
 
 import (
 	"fmt"
+	"github.com/writeas/impart"
 	"github.com/writeas/web-core/bots"
 	"github.com/writeas/web-core/log"
 	"image"
 	"image/color"
 	"image/gif"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -61,4 +63,18 @@ func handleViewHits(w http.ResponseWriter, r *http.Request) error {
 	path := r.FormValue("p")
 	fmt.Fprintf(w, "%d", counts[path])
 	return nil
+}
+
+func handleHome(w http.ResponseWriter, r *http.Request) error {
+	if r.URL.Path != "/" {
+		return impart.HTTPError{http.StatusNotFound, "Not found"}
+	}
+	data, err := ioutil.ReadFile("index.html")
+	if err != nil {
+		return impart.HTTPError{http.StatusNotFound, "Not found"}
+	}
+
+	w.Header().Set("Content-Type", "text/html")
+	_, err = w.Write(data)
+	return err
 }
