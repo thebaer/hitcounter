@@ -2,7 +2,7 @@ package hitcounter
 
 import (
 	"fmt"
-	"github.com/writeas/impart"
+	"github.com/writeas/web-core/bots"
 	"github.com/writeas/web-core/log"
 	"image"
 	"image/color"
@@ -13,14 +13,24 @@ import (
 
 var counts = map[string]uint64{}
 
-func handlePixel(w http.ResponseWriter, r *http.Request) error {
+// CountView counts the view if it meets certain criteria, returning whether or not it was actually counted.
+func CountView(r *http.Request) bool {
+	if r.Method == "HEAD" || bots.IsBot(r.UserAgent()) {
+		return false
+	}
+
 	path := r.FormValue("p")
 	if path == "" {
-		return impart.HTTPError{http.StatusNotFound, ""}
+		return false
 	}
 
 	// Count the hit
 	counts[path]++
+	return true
+}
+
+func handlePixel(w http.ResponseWriter, r *http.Request) error {
+	CountView(r)
 
 	m := image.NewRGBA(image.Rect(0, 0, 1, 1))
 	m.Set(0, 0, color.RGBA{255, 255, 255, 0})
