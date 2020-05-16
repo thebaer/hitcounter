@@ -56,6 +56,7 @@ func Shutdown() error {
 
 func initRoutes(r *mux.Router) {
 	r.HandleFunc("/hits", handleHandler(handleViewHits))
+	r.HandleFunc("/hit", handleHandler(handleView))
 	r.HandleFunc("/hit.gif", handleHandler(handlePixel))
 }
 

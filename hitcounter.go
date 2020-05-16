@@ -49,6 +49,14 @@ func handlePixel(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
+func handleView(w http.ResponseWriter, r *http.Request) error {
+	CountView(r)
+
+	path := r.FormValue("p")
+	fmt.Fprintf(w, "%d", counts[path])
+	return nil
+}
+
 func handleViewHits(w http.ResponseWriter, r *http.Request) error {
 	path := r.FormValue("p")
 	fmt.Fprintf(w, "%d", counts[path])
