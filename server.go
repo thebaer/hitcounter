@@ -25,7 +25,7 @@ func Serve() error {
 	// Load counts
 	data, err := ioutil.ReadFile(countsFilename)
 	if err != nil {
-		log.Info("failed to ReadFile: %s", countsFilename, err)
+		log.Info("failed to ReadFile: %s", err)
 		log.Info("All counts starting from 0")
 	} else {
 		err = json.Unmarshal(data, &counts)
