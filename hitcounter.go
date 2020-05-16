@@ -34,7 +34,7 @@ func handlePixel(w http.ResponseWriter, r *http.Request) error {
 	err := gif.Encode(w, m, nil)
 	if err != nil {
 		log.Error("Unable to encode gif: %s", err)
-		return nil
+		return err
 	}
 	return nil
 }
