@@ -1,24 +1,57 @@
 package hitcounter
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/writeas/impart"
 	"github.com/writeas/web-core/log"
+	"io/ioutil"
 	"net/http"
 	"runtime/debug"
 	"time"
 )
 
+const (
+	countsFilename = "counts.json"
+)
+
 // Initialize and start web server
 func Serve() error {
+	// Set up routes
 	r := mux.NewRouter()
 	initRoutes(r)
 
+	// Load counts
+	data, err := ioutil.ReadFile(countsFilename)
+	if err != nil {
+		log.Info("failed to ReadFile: %s", countsFilename, err)
+		log.Info("All counts starting from 0")
+	} else {
+		err = json.Unmarshal(data, &counts)
+		if err != nil {
+			log.Error("failed to Unmarshal %s: %s", countsFilename, err)
+			log.Error("All counts starting from 0")
+		}
+	}
+
+	// Start server
 	serve := fmt.Sprintf("%s:%d", "", 6767)
 	log.Info("Serving on %s", serve)
-	err := http.ListenAndServe(serve, r)
+	err = http.ListenAndServe(serve, r)
 	return err
+}
+
+func Shutdown() error {
+	b, err := json.Marshal(counts)
+	if err != nil {
+		return fmt.Errorf("unable to marshal counts: %s", err)
+	}
+	err = ioutil.WriteFile(countsFilename, b, 0666)
+	if err != nil {
+		return fmt.Errorf("counts not saved: %s", err)
+	}
+	return nil
 }
 
 func initRoutes(r *mux.Router) {
