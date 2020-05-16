@@ -52,11 +52,7 @@ func handlePixel(w http.ResponseWriter, r *http.Request) error {
 func handleView(w http.ResponseWriter, r *http.Request) error {
 	CountView(r)
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-
-	path := r.FormValue("p")
-	fmt.Fprintf(w, "%d", counts[path])
-	return nil
+	return handleViewHits(w, r)
 }
 
 func handleViewHits(w http.ResponseWriter, r *http.Request) error {
