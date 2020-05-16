@@ -87,7 +87,8 @@ func handleHandler(f handlerFunc) http.HandlerFunc {
 			} else {
 				status = http.StatusInternalServerError
 			}
+		} else {
+			status = http.StatusOK
 		}
-		status = http.StatusOK
 	}
 }
