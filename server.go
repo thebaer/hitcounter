@@ -84,6 +84,9 @@ func handleHandler(f handlerFunc) http.HandlerFunc {
 					w.Header().Set("Location", err.Message)
 				}
 				w.WriteHeader(status)
+				if status == http.StatusNotFound && err.Message != "" {
+					fmt.Fprintf(w, err.Message)
+				}
 			} else {
 				status = http.StatusInternalServerError
 			}
