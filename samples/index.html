@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<title>hitcounter demo</title>
+	</head>
+	<body>
+		<h1>hitcounter demo</h1>
+
+		<div id="count">Viewed ??? times</div>
+
+		<noscript><img src="http://localhost:6767/hit.gif?p=PAGE/GOES/HERE" style="border:0;" alt="" /></noscript>
+		<script>
+			var xh = new XMLHttpRequest();
+			xh.onreadystatechange = function() {
+				if (xh.readyState == XMLHttpRequest.DONE && xh.status == 200) {
+					document.getElementById('count').innerHTML = "Viewed " + xh.responseText + " times";
+				}
+			};
+			xh.open("GET", "http://localhost:6767/hit?p=PAGE/GOES/HERE", true);
+			xh.send();
+		</script>
+	</body>
+</html>
