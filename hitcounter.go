@@ -28,6 +28,7 @@ func CountView(r *http.Request) bool {
 
 	// Count the hit
 	counts[path]++
+	SaveCounts()
 	return true
 }
 

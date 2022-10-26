@@ -14,7 +14,7 @@ func main() {
 	go func() {
 		<-c
 		log.Info("Shutting down...")
-		hitcounter.Shutdown()
+		hitcounter.SaveCounts()
 		log.Info("Done.")
 		os.Exit(0)
 	}()

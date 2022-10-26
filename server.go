@@ -42,7 +42,7 @@ func Serve() error {
 	return err
 }
 
-func Shutdown() error {
+func SaveCounts() error {
 	b, err := json.Marshal(counts)
 	if err != nil {
 		return fmt.Errorf("unable to marshal counts: %s", err)
